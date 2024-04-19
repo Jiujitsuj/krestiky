@@ -1,0 +1,55 @@
+board = list(range(1,10)) #pole
+count = 0 #schetchik
+win = False  #pobeditel
+v_poz=[(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)] #viigrishniye pozicii
+player_1 = 'X'
+player_2 = '0'
+
+#Methodi
+def ds_board(board): # otrisovka polya
+    print('----+---+----')
+    for i in range(3):
+        print('|',board[i*3], '|', board[1+i*3], '|', board[2+i*3], '|')
+        print('----+---+----')
+
+def move_pl(player_2, board): # Hodi igrokov
+    check = False
+    while not check:
+        move = input('Vvedite nomer yacheyki ' + player_2 + ': ')
+        try:
+            move = int(move)
+        except:
+            print('Nuzhno vvesti chislo.')
+            continue
+        if 1 <= move <= 9:
+            if str(board[move - 1]) not in 'X0':
+                board[move - 1] = player_2
+                check = True
+            else:
+                print('yacheika zanyata.')
+        else:
+            print('vvedite chislo v diapazone 1-9')
+
+def proverka_v(board): #proverka viygrisha
+    for i in v_poz:
+        if board[i[0]] == board[i[1]] == board[i[2]]:
+            return board[i[0]]
+    return False
+
+# Osnovnoi cikl
+while not win:
+    ds_board(board)
+    if count % 2 == 0:
+        move_pl(player_1, board)
+    else:
+        move_pl(player_2, board)
+    count += 1
+    if count > 4:
+        value = proverka_v(board)
+        if value:
+            print(value + ' viygral.')
+            win = True
+    if count == 9 and win == False:
+        print('Nichiya.')
+        break
+
